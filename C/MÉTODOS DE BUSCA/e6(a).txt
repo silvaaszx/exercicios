@@ -1,0 +1,66 @@
+#include <stdio.h>
+
+void cadastrar_numeros(int numeros[], int n) {
+    int temp, repetido;
+    for (int i = 0; i < n; i++) {
+        do {
+            repetido = 0;
+            printf("Digite o número %d: ", i + 1);
+            scanf("%d", &temp);
+            for (int j = 0; j < i; j++) {
+                if (numeros[j] == temp) {
+                    repetido = 1;
+                    printf("Número repetido! Digite novamente.\n");
+                    break;
+                }
+            }
+        } while (repetido);
+        numeros[i] = temp;
+    }
+}
+
+void ordenar_numeros(int numeros[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (numeros[j] > numeros[j + 1]) {
+                int temp = numeros[j];
+                numeros[j] = numeros[j + 1];
+                numeros[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int busca_sequencial(int numeros[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (numeros[i] == x) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    int numeros[15];
+    int n = 15;
+    int x, posicao;
+
+    cadastrar_numeros(numeros, n);
+    ordenar_numeros(numeros, n);
+
+    printf("Digite o número a ser buscado: ");
+    scanf("%d", &x);
+
+    posicao = busca_sequencial(numeros, n, x);
+    if (posicao != -1) {
+        if (posicao % 2 == 0) {
+            printf("O número %d está na posição %d (par).\n", x, posicao);
+        } else {
+            printf("O número %d está na posição %d (ímpar).\n", x, posicao);
+        }
+    } else {
+        printf("O número %d não foi encontrado no vetor.\n", x);
+    }
+
+    return 0;
+}

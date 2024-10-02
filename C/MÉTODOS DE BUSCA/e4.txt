@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int busca_binaria_decrescente(int arr[], int tamanho, int chave) {
+    int esquerda = 0;
+    int direita = tamanho - 1;
+
+    while (esquerda <= direita) {
+        int meio = esquerda + (direita - esquerda) / 2;
+
+        if (arr[meio] == chave)
+            return meio;
+
+        if (arr[meio] > chave)
+            esquerda = meio + 1;
+        else
+            direita = meio - 1;
+    }
+
+    return -1;
+}
+
+int main() {
+    int lista[] = {99, 95, 89, 84, 77, 72, 69, 68, 57, 53, 49, 41, 37, 33, 31, 27, 16, 10};
+    int tamanho = sizeof(lista) / sizeof(lista[0]);
+    int itens[] = {33, 50, 77, 90, 99};
+    int num_itens = sizeof(itens) / sizeof(itens[0]);
+
+    for (int i = 0; i < num_itens; i++) {
+        int resultado = busca_binaria_decrescente(lista, tamanho, itens[i]);
+        if (resultado != -1) {
+            printf("O item %d está na lista na posição %d.\n", itens[i], resultado);
+        } else {
+            printf("O item %d não está na lista.\n", itens[i]);
+        }
+    }
+
+    return 0;
+}

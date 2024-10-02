@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_GUESTS 100
+#define NAME_LENGTH 50
+
+void get_guest_list(char guest_list[][NAME_LENGTH], int *num_guests) {
+    printf("Quantos convidados (máximo %d)? ", MAX_GUESTS);
+    scanf("%d", num_guests);
+    getchar();
+    
+    for (int i = 0; i < *num_guests; i++) {
+        printf("Digite o nome do convidado %d: ", i + 1);
+        fgets(guest_list[i], NAME_LENGTH, stdin);
+        guest_list[i][strcspn(guest_list[i], "\n")] = 0;
+    }
+}
+
+int pertence(char guest_list[][NAME_LENGTH], int num_guests, char *name) {
+    for (int i = 0; i < num_guests; i++) {
+        if (strcmp(guest_list[i], name) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int main() {
+    char guest_list[MAX_GUESTS][NAME_LENGTH];
+    int num_guests;
+    char name[NAME_LENGTH];
+
+    get_guest_list(guest_list, &num_guests);
+
+    printf("Digite o nome a ser verificado: ");
+    fgets(name, NAME_LENGTH, stdin);
+    name[strcspn(name, "\n")] = 0;
+
+    if (pertence(guest_list, num_guests, name)) {
+        printf("%s está na lista de convidados.\n", name);
+    } else {
+        printf("%s não está na lista de convidados.\n", name);
+    }
+
+    return 0;
+}

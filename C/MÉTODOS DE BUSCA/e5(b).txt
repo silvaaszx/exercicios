@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    int codigo;
+    char descricao[50];
+    float preco;
+} Produto;
+
+void cadastrar_produtos(Produto produtos[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("Digite o código do produto %d: ", i + 1);
+        scanf("%d", &produtos[i].codigo);
+        printf("Digite a descrição do produto %d: ", i + 1);
+        getchar();
+        fgets(produtos[i].descricao, 50, stdin);
+        produtos[i].descricao[strcspn(produtos[i].descricao, "\n")] = 0;
+        printf("Digite o preço do produto %d: ", i + 1);
+        scanf("%f", &produtos[i].preco);
+    }
+}
+
+void ordenar_produtos(Produto produtos[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (produtos[j].codigo > produtos[j + 1].codigo) {
+                Produto temp = produtos[j];
+                produtos[j] = produtos[j + 1];
+                produtos[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int busca_binaria(Produto produtos[], int n, int codigo, int *comparacoes) {
+    int esquerda = 0, direita = n - 1;
+    while (esquerda <= direita) {
+        int meio = esquerda + (direita - esquerda) / 2;
+        (*comparacoes)++;
+        if (produtos[meio].codigo == codigo)
+            return meio;
+        (*comparacoes)++;
+        if (produtos[meio].codigo < codigo)
+            esquerda = meio + 1;
+        else
+            direita = meio - 1;
+    }
+    return -1;
+}
+
+int main() {
+    Produto produtos[12];
+    int n = 12;
+    int codigo;
+    int comparacoes;
+
+    cadastrar_produtos(produtos, n);
+    ordenar_produtos(produtos, n);
+
+    printf("Digite o código do produto a ser buscado: ");
+    scanf("%d", &codigo);
+
+    comparacoes = 0;
+    busca_binaria(produtos, n, codigo, &comparacoes);
+    printf("Comparações na busca binária: %d\n", comparacoes);
+
+    return 0;
+}
